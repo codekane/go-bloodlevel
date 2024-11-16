@@ -1,0 +1,55 @@
+package model
+
+import (
+  "gorm.io/gorm"
+  "time"
+)
+
+type Substance struct {
+  gorm.Model
+  Name                          string                        `json:"name"`
+  HalfLife                      int                           `json:"half-life"`
+  //Forms                       []SubstanceForm
+}
+
+type ROI struct {
+  gorm.Model
+  Name                          string
+}
+
+type Pharmacokinetics struct {
+  gorm.Model
+  SubstanceID                   int
+  ROIid                         int // Custom name needs special config
+  BioAvailability               int
+  tOnset                        int
+  tMax                          int
+}
+
+// This one is complex
+// Consider cutting it. It's built to handle a capsule with time release... Which I wanted to implement.
+type SubstanceForm struct {
+  ID                            uint
+  Name                          int
+  Substance                     []Substance
+  Doses                         []Dose
+}
+
+type Dose struct {
+  ID                            uint                          `json:"id"`
+  Substance                     Substance
+  SubstanceID                   int
+  Dosage                        int
+  Time                          time.Time
+  tOffset                       int
+}
+
+type DoseRecord struct {
+  ID                            uint
+  Substance                     Substance
+  Dosage                        int
+  SubstanceForm                 SubstanceForm
+  ROI                           ROI
+  ROIid                         int
+  Time                      time.Time
+}

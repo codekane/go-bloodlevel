@@ -2,6 +2,7 @@ package main
 
 import (
   "log"
+  "github.com/gin-contrib/cors"
   "github.com/gin-gonic/gin"
   "bloodlevel/dose"
   "bloodlevel/model"
@@ -15,6 +16,7 @@ func main() {
   db.DB()
 
   router := gin.Default()
+  router.Use(cors.Default())
 
   router.GET("/doses", dose.GetDoses)
   router.GET("/dose/:id", dose.GetDose)
